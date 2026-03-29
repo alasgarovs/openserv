@@ -4,34 +4,48 @@ set -e
 
 echo "[*] Installing openserv..."
 
-# Create directory
-mkdir -p "$HOME/.openserv"
+INSTALL_DIR="$HOME/.openserv"
+BIN_DIR="$HOME/.local/bin"
+TARGET="$BIN_DIR/openserv"
+SOURCE_SCRIPT="$INSTALL_DIR/bin/openserv.sh"
 
-# Copy files
-cp -r src/. "$HOME/.openserv/"
+# Detect shell config file
+SHELL_RC="$HOME/.bashrc"
+if [ -n "$ZSH_VERSION" ]; then
+    SHELL_RC="$HOME/.zshrc"
+fi
+
+# Create install directory and copy files
+mkdir -p "$INSTALL_DIR"
+cp -r src/. "$INSTALL_DIR/"
 
 # Ensure main script is executable
-chmod +x "$HOME/.openserv/openserv.sh"
+chmod +x "$SOURCE_SCRIPT"
 
 # Ensure local bin exists
-mkdir -p "$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
 
-# Create symlink (global command)
-ln -sf "$HOME/.openserv/openserv.sh" "$HOME/.local/bin/openserv"
+# Create or update symlink
+ln -sfn "$SOURCE_SCRIPT" "$TARGET"
 
-# Add ~/.local/bin to PATH if not already present
-if ! grep -q 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc"; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    echo "[*] Added ~/.local/bin to PATH in ~/.bashrc"
+# Add ~/.local/bin to PATH if missing
+if ! grep -q '\.local/bin' "$SHELL_RC"; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+    echo "[*] Added ~/.local/bin to PATH in $SHELL_RC"
 fi
 
 echo "[✓] Installation complete!"
-
 echo ""
-echo "Run the command with:"
+echo "Run with:"
 echo "  openserv"
 echo ""
 
-echo "If it doesn't work immediately, run:"
-echo "  source ~/.bashrc"
-echo "or restart your terminal."
+# Check if command is immediately available
+if command -v openserv >/dev/null 2>&1; then
+    echo "[✓] openserv is ready to use!"
+else
+    echo "[!] It may not be available yet."
+    echo "Run:"
+    echo "  source $SHELL_RC"
+    echo "or restart your terminal."
+fi
