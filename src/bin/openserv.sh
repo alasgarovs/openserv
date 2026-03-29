@@ -87,7 +87,7 @@ cmd_list() {
     echo -e "\e[1;34m└────────────────────────────────────────────────\e[0m\n"
 }
 
-cmd_start() {
+cmd_run() {
     print_header; load_scripts
     pick_model "🚀 Start model: " "${files[@]}"
 
@@ -207,11 +207,14 @@ cmd_logs() {
 cmd_help() {
     print_header
     echo -e "\e[1;34m┌─ Commands ──────────────────────────────────────\e[0m"
-    echo -e "  \e[1;32mopenserv start\e[0m   · Launch a model"
-    echo -e "  \e[1;32mopenserv status\e[0m  · Show running models"
-    echo -e "  \e[1;32mopenserv stop\e[0m    · Stop a running model"
-    echo -e "  \e[1;32mopenserv list\e[0m    · List all models"
-    echo -e "  \e[1;32mopenserv logs\e[0m    · Tail model logs"
+    echo -e "  \e[1;32mrun (r)\e[0m        · Launch a model"
+    echo -e "  \e[1;32mstop (s)\e[0m       · Stop a running model"
+    echo -e "  \e[1;32mstatus (st)\e[0m    · Show running models"
+    echo -e "  \e[1;32mlist (ls)\e[0m      · List all models"
+    echo -e "  \e[1;32mlog (lg)\e[0m       · Tail model logs"
+    echo -e "  \e[1;32mcreate (c)\e[0m     · Create model config"
+    echo -e "  \e[1;32mupdate (u)\e[0m     · Update model config"
+    echo -e "  \e[1;32mremove (rm)\e[0m    · Delete model config"
     echo -e "\e[1;34m└────────────────────────────────────────────────\e[0m"
     echo -e "\n  Config: \e[2m$DIR\e[0m   PIDs/logs: \e[2m$PIDDIR\e[0m\n"
 }
@@ -219,11 +222,18 @@ cmd_help() {
 # ── Entry point ────────────────────────────────────────────────────────────────
 
 case "$1" in
-    ""|start)        cmd_start  ;;
-    list)            cmd_list   ;;
-    status)          cmd_status ;;
-    stop)            cmd_stop   ;;
-    logs|log)        cmd_logs   ;;
-    -h|--help|help)  cmd_help   ;;
-    *) print_header; echo -e "\e[1;31m✗ Unknown command: $1\e[0m\n"; cmd_help ;;
+    run|r)              cmd_run  ;;
+    list|ls)            cmd_list   ;;
+    status|st)          cmd_status ;;
+    stop|s)             cmd_stop   ;;
+    logs|log|lg)        cmd_logs   ;;
+    create|c)           cmd_create ;;
+    update|u)           cmd_update ;;
+    remove|rm)          cmd_remove ;;
+    -h|--help|help)     cmd_help   ;;
+    *) 
+        print_header
+        echo -e "\e[1;31m✗ Unknown command: $1\e[0m\n"
+        cmd_help 
+        ;;
 esac
