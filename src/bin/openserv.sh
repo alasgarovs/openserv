@@ -241,9 +241,26 @@ cmd_create() {
     echo "$default_conf" > "$file"
     chmod +x "$file"
 
-    echo -e "\n\e[1;32m✅ Model '$name' created at $file\e[0m"
     nano "$file"
     echo -e "\n\e[1;32m📄 Config saved at: \e[1;36m$file\e[0m\n"
+}
+
+cmd_update() {
+    print_header
+    load_scripts
+
+    local existing_files=("${files[@]}")
+    [ ${#existing_files[@]} -eq 0 ] && echo -e "\e[1;33m⚠ No models found to update.\e[0m\n" && return
+
+    pick_model "🛠 Update model conf: " "${existing_files[@]}"
+
+    local file="$DIR/$selected.sh"
+    if [ ! -f "$file" ]; then
+        echo -e "\e[1;31m✗ Config file not found: $file\e[0m"; return
+    fi
+
+    nano "$file"
+    echo -e "\n\e[1;32m✅ Updated config saved at: \e[1;36m$file\e[0m\n"
 }
 
 cmd_help() {
