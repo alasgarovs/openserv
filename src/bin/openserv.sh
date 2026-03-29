@@ -204,17 +204,59 @@ cmd_logs() {
     tail -f "$log"
 }
 
+cmd_create() {
+    print_header
+    load_scripts
+
+    local name="$2"
+    if [ -z "$name" ]; then
+        echo -e "\e[1;31m✗ Usage: openserv create <modelname>\e[0m\n"
+        return
+    fi
+
+    local file="$DIR/$name.sh"
+    if [ -f "$file" ]; then
+        echo -e "\e[1;31m✗ Model '$name' already exists\e[0m"; return
+    fi
+
+
+    local default_conf='#!/bin/bash
+# This is example configuration of llama-server, for more https://github.com/ggml-org/llama.cpp
+
+# llama-server \
+#   -m ~/.openserv/models/example-model.gguf \
+#   -ngl 35 \
+#   -c 6144 \
+#   -t 6 \
+#   -b 512 \
+#   --ubatch-size 128 \
+#   --flash-attn off \
+#   --no-mmap \
+#   --cont-batching \
+#   --ignore-eos \
+#   --port 18080 \
+#   --host 0.0.0.0
+'
+
+    echo "$default_conf" > "$file"
+    chmod +x "$file"
+
+    echo -e "\n\e[1;32m✅ Model '$name' created at $file\e[0m"
+    nano "$file"
+    echo -e "\n\e[1;32m📄 Config saved at: \e[1;36m$file\e[0m\n"
+}
+
 cmd_help() {
     print_header
     echo -e "\e[1;34m┌─ Commands ──────────────────────────────────────\e[0m"
-    echo -e "  \e[1;32mrun (r)\e[0m        · Launch a model"
-    echo -e "  \e[1;32mstop (s)\e[0m       · Stop a running model"
-    echo -e "  \e[1;32mstatus (st)\e[0m    · Show running models"
-    echo -e "  \e[1;32mlist (ls)\e[0m      · List all models"
-    echo -e "  \e[1;32mlog (lg)\e[0m       · Tail model logs"
-    echo -e "  \e[1;32mcreate (c)\e[0m     · Create model config"
-    echo -e "  \e[1;32mupdate (u)\e[0m     · Update model config"
-    echo -e "  \e[1;32mremove (rm)\e[0m    · Delete model config"
+    echo -e "  \e[1;32mrun (r)\e[0m             · Launch a model"
+    echo -e "  \e[1;32mstop (s)\e[0m            · Stop a running model"
+    echo -e "  \e[1;32mstatus (st)\e[0m         · Show running models"
+    echo -e "  \e[1;32mlist (ls)\e[0m           · List all models"
+    echo -e "  \e[1;32mlog (lg)\e[0m            · Tail model logs"
+    echo -e "  \e[1;32mcreate (c) <name>\e[0m   · Create model config (e.g., openserv create mymodel)"
+    echo -e "  \e[1;32mupdate (u)\e[0m          · Update model config"
+    echo -e "  \e[1;32mremove (rm)\e[0m         · Delete model config"
     echo -e "\e[1;34m└────────────────────────────────────────────────\e[0m"
     echo -e "\n  Config: \e[2m$DIR\e[0m   PIDs/logs: \e[2m$PIDDIR\e[0m\n"
 }
@@ -222,12 +264,12 @@ cmd_help() {
 # ── Entry point ────────────────────────────────────────────────────────────────
 
 case "$1" in
-    run|r)              cmd_run  ;;
+    run|r)              cmd_run    ;;
     list|ls)            cmd_list   ;;
     status|st)          cmd_status ;;
     stop|s)             cmd_stop   ;;
     logs|log|lg)        cmd_logs   ;;
-    create|c)           cmd_create ;;
+    create|c)           cmd_create "$@" ;;  # Pass all arguments so $2 is the model name
     update|u)           cmd_update ;;
     remove|rm)          cmd_remove ;;
     -h|--help|help)     cmd_help   ;;
