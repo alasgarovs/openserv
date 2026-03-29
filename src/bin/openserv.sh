@@ -263,6 +263,32 @@ cmd_update() {
     echo -e "\n\e[1;32m✅ Updated config saved at: \e[1;36m$file\e[0m\n"
 }
 
+cmd_remove() {
+    print_header
+    load_scripts
+
+    local existing_files=("${files[@]}")
+    [ ${#existing_files[@]} -eq 0 ] && echo -e "\e[1;33m⚠ No models found to remove.\e[0m\n" && return
+
+    pick_model "🗑 Remove model: " "${existing_files[@]}"
+
+    local file="$DIR/$selected.sh"
+    local pidfile="$PIDDIR/$selected.pid"
+    local logfile="$PIDDIR/$selected.log"
+
+    read -rp "Are you sure you want to delete '$selected.sh'? [y/N] " confirm
+    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+        echo -e "\n\e[1;33m⚠ Removal cancelled\e[0m\n"
+        return
+    fi
+
+    [ -f "$file" ] && rm -f "$file"
+    [ -f "$pidfile" ] && rm -f "$pidfile"
+    [ -f "$logfile" ] && rm -f "$logfile"
+
+    echo -e "\n\e[1;32m✅ Model config '$selected.sh' removed successfully\e[0m\n"
+}
+
 cmd_help() {
     print_header
     echo -e "\e[1;34m┌─ Commands ──────────────────────────────────────\e[0m"
