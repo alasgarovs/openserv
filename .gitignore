@@ -2,5 +2,12 @@
 *.bak
 .idea/
 lab/
+zlab/
 __pycache__/
+logs/
+tmp/
 todo.md
+.worktrees
+.env
+.vscode
+.scripts
