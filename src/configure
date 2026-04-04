@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "[*] Installing openserv..."
+echo "[*] Installing LlamaOrch..."
 
-INSTALL_DIR="$HOME/.openserv"
+INSTALL_DIR="$HOME/.llamaorch"
 BIN_DIR="$HOME/.local/bin"
-TARGET="$BIN_DIR/openserv"
-SOURCE_SCRIPT="$INSTALL_DIR/bin/openserv"
+TARGET="$BIN_DIR/llamaorch"
+SOURCE_SCRIPT="$INSTALL_DIR/bin/llamaorch"
 
 # Detect shell config file
 SHELL_RC="$HOME/.bashrc"
@@ -17,7 +17,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Copy files
 mkdir -p "$INSTALL_DIR"
-cp -r "$SCRIPT_DIR/.openserv/." "$INSTALL_DIR/"
+cp -r "$SCRIPT_DIR/.llamaorch/." "$INSTALL_DIR/"
 
 # Permissions
 chmod +x "$SOURCE_SCRIPT"
@@ -33,4 +33,4 @@ if ! grep -q '\.local/bin' "$SHELL_RC"; then
 fi
 
 echo "[✓] Installation complete!"
-echo "Run: openserv"
+echo "Run: llamaorch run"

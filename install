@@ -5,10 +5,10 @@ set -e
 command -v tar >/dev/null || { echo "tar is required"; exit 1; }
 command -v curl >/dev/null || { echo "curl is required"; exit 1; }
 
-REPO="https://github.com/alasgarovs/openserv"
+REPO="https://github.com/alasgarovs/llamaorch"
 BRANCH="main"
 
-echo "[*] Installing OpenServ..."
+echo "[*] Installing LlamaOrch..."
 
 TMP_DIR="$(mktemp -d)"
 
@@ -20,15 +20,15 @@ trap cleanup EXIT
 ARCHIVE_URL="$REPO/archive/refs/heads/$BRANCH.tar.gz"
 
 # Download
-curl -fsSL "$ARCHIVE_URL" -o "$TMP_DIR/openserv.tar.gz"
+curl -fsSL "$ARCHIVE_URL" -o "$TMP_DIR/llamaorch.tar.gz"
 
 # Extract
-tar -xzf "$TMP_DIR/openserv.tar.gz" -C "$TMP_DIR"
+tar -xzf "$TMP_DIR/llamaorch.tar.gz" -C "$TMP_DIR"
 
 # Detect extracted directory (GitHub format: repo-branch)
-EXTRACTED_DIR="$(find "$TMP_DIR" -maxdepth 1 -type d -name "openserv-*")"
+EXTRACTED_DIR="$(find "$TMP_DIR" -maxdepth 1 -type d -name "llamaorch-*")"
 
 # Run installer
 bash "$EXTRACTED_DIR/src/configure"
 
-echo "[✓] OpenServ installed successfully!"
+echo "[✓] LlamaOrch installed successfully!"
