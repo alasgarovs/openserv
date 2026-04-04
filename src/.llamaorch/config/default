@@ -2,7 +2,7 @@
 # This is example cofiguration of llama-server, for more https://github.com/ggml-org/llama.cpp
 
 # llama-server \
-#   -m ~/.openserv/models/example-model.gguf \
+#   -m ~/.llamaorch/models/example-model.gguf \
 #   -ngl 35 \
 #   -c 6144 \
 #   -t 6 \
