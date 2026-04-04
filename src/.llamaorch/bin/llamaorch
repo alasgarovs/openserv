@@ -39,7 +39,7 @@ wait_port() {
 
 load_scripts() {
     files=("$DIR"/*.sh)
-    [ ! -e "${files[0]}" ] && echo -e "    ${RED}✗ No scripts found in $DIR${RESET}" && exit 1
+    [ ! -e "${files[0]}" ] && echo -e "    ${RED}✗ Model config scripts not found in $DIR${RESET}\n" && exit 1
 }
 
 # Pick a model with fzf or numbered menu; sets $selected
