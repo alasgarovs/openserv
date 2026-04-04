@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "[*] Installing LlamaOrch..."
+RESET="\e[0m"
+YELLOW="\e[38;2;205;144;119m"
+GREEN="\e[38;2;100;200;120m"
+
+
+echo -e "${GREEN}[*]${RESET} Installing ${YELLOW}LlamaOrch${RESET}..."
 
 INSTALL_DIR="$HOME/.llamaorch"
 BIN_DIR="$HOME/.local/bin"
@@ -32,5 +37,5 @@ if ! grep -q '\.local/bin' "$SHELL_RC"; then
     echo "[*] Added ~/.local/bin to PATH in $SHELL_RC"
 fi
 
-echo "[✓] Installation complete!"
-echo "Run: llamaorch run"
+echo -e "${GREEN}[✓]${RESET} Installation complete!"
+echo -e "    Run: ${YELLOW}llamaorch run${RESET}"
