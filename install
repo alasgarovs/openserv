@@ -8,8 +8,6 @@ command -v curl >/dev/null || { echo "curl is required"; exit 1; }
 REPO="https://github.com/alasgarovs/llamaorch"
 BRANCH="main"
 
-echo "[*] Installing LlamaOrch..."
-
 TMP_DIR="$(mktemp -d)"
 
 cleanup() {
@@ -30,5 +28,3 @@ EXTRACTED_DIR="$(find "$TMP_DIR" -maxdepth 1 -type d -name "llamaorch-*")"
 
 # Run installer
 bash "$EXTRACTED_DIR/src/configure"
-
-echo "[✓] LlamaOrch installed successfully!"
