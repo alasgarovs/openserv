@@ -38,4 +38,4 @@ if ! grep -q '\.local/bin' "$SHELL_RC"; then
 fi
 
 echo -e "${GREEN}[✓]${RESET} Installation complete!"
-echo -e "    Run: ${YELLOW}llamaorch run${RESET}"
+echo -e "    Run: ${YELLOW}llamaorch${RESET}"
