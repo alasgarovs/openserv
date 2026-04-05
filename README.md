@@ -1,7 +1,8 @@
 <div align="center">
-<img width="643" height="198" alt="background" src="https://github.com/user-attachments/assets/f17ca625-3adc-4aa9-b6ba-64e35e1b0d39" />
 
-<p>Bash-based CLI tool for llama.cpp server </p>
+<img width="689" height="140" alt="logo" src="https://github.com/user-attachments/assets/c31f7b83-0ce0-4df7-9b55-e027f80fd537" />
+
+<p>CLI Orchestrator for llama.cpp server </p>
 
 
 [![Bash](https://img.shields.io/badge/Bash-CLI-red.svg)](https://www.gnu.org/software/bash/)
@@ -11,4 +12,4 @@
 
 </div>
 
-### OpenServ is a simple Bash-based CLI tool for managing LLMs in llama.cpp server. It lets you start, stop, list and monitor LLMs in llama-server with ease.
+### LlamaOrch is simple Bash-based CLI Orchestrator for managing LLMs in llama.cpp server. It lets you start, stop, list and monitor LLMs in llama-server with ease.
