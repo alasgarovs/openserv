@@ -320,7 +320,7 @@ cmd_help() {
 
 # ── Entry point ────────────────────────────────────────────────────────────────
 
-cmd="$1"
+cmd="${1:-help}"
 arg="$2"
 
 declare -A cmds=(
@@ -350,14 +350,21 @@ usage_error() {
     exit 1
 }
 
-if [[ -n "${cmds[$cmd]}" ]]; then
-    if [[ "$cmd" == "create" || "$cmd" == "c" ]]; then
-        [ $# -eq 2 ] && "${cmds[$cmd]}" "$arg" || usage_error "$cmd" 1
-    else
-        [ $# -eq 1 ] && "${cmds[$cmd]}" || usage_error "$cmd" 0
-    fi
-else
+if [[ -z "${cmds[$cmd]}" ]]; then
     print_header
     echo -e "    ${RED}✗  Unknown command: ${WHITE}$cmd${RESET}\n"
     echo -e "    ${YELLOW}Use 'llamaorch help' for more info${RESET}\n"
+    exit 1
 fi
+
+case "$cmd" in
+    create)
+        [[ $# -eq 2 ]] && cmd_create "$arg" || usage_error "$cmd" 1
+        ;;
+    help|-h)
+        cmd_help
+        ;;
+    *)
+        [[ $# -eq 1 ]] && "${cmds[$cmd]}" || usage_error "$cmd" 0
+        ;;
+esac
